@@ -40,9 +40,9 @@ export default function Login() {
     <div className="auth-wrapper">
       <div className="auth-container animate-slide-up">
         <div className="auth-title">
-          <div className="flex justify-center items-center gap-2" style={{ marginBottom: '1rem' }}>
+          <div className="flex justify-center items-center gap-2 cursor-pointer" style={{ marginBottom: '1rem' }} onClick={() => navigate('/')}>
             <Leaf size={40} color="var(--primary-light)" />
-            <h1>Welcome Back</h1>
+            <h1>ReCircle</h1>
           </div>
           <p>Sign in to continue your sustainable journey.</p>
         </div>

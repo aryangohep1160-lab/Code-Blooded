@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, Search, Filter, Plus, Heart } from 'lucide-react';
+import { Leaf, Search, Heart } from 'lucide-react';
+import Skeleton from '../components/Skeleton';
 
 export default function Marketplace() {
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState('ALL');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await fetch('http://localhost:5001/api/listings');
+        const queryParams = new URLSearchParams();
+        if (searchQuery) queryParams.append('search', searchQuery);
+        if (typeFilter !== 'ALL') queryParams.append('type', typeFilter);
+
+        const res = await fetch(`http://localhost:5001/api/listings?${queryParams.toString()}`);
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setListings(data);
@@ -20,41 +27,28 @@ export default function Marketplace() {
         setLoading(false);
       }
     };
-    fetchListings();
-  }, []);
+    
+    // Add a small debounce for typing
+    const delay = setTimeout(() => {
+      fetchListings();
+    }, 300);
+    return () => clearTimeout(delay);
+  }, [searchQuery, typeFilter]);
 
   if (loading) {
-    return <div className="auth-wrapper"><div className="animate-slide-up"><Leaf size={40} className="spin" color="var(--primary-light)" /></div></div>;
+    return (
+      <main className="container animate-slide-up" style={{ padding: '3rem 24px', flex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
+          {[1,2,3,4,5,6].map(i => (
+            <div key={i} className="glass-card" style={{ padding: '0' }}><Skeleton height="350px" borderRadius="12px" /></div>
+          ))}
+        </div>
+      </main>
+    );
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Header / Navbar */}
-      <header style={{ 
-        background: 'rgba(15, 23, 42, 0.7)', 
-        backdropFilter: 'blur(16px)',
-        borderBottom: 'var(--glass-border)', 
-        padding: '1rem 2rem',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50
-      }}>
-        <div className="container flex justify-between items-center">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <Leaf size={28} color="var(--primary-light)" />
-            <h2 style={{ margin: 0, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '1px' }}>ReCircle</h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="btn btn-outline" style={{ padding: '8px 20px', fontSize: '0.9rem' }} onClick={() => navigate('/dashboard')}>
-              Dashboard
-            </button>
-            <button className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.9rem' }} onClick={() => navigate('/create-listing')}>
-              <Plus size={16} /> New Listing
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <>
       {/* Main Content */}
       <main className="container animate-slide-up" style={{ padding: '3rem 24px', flex: 1 }}>
         <div className="flex justify-between items-center" style={{ marginBottom: '2.5rem' }}>
@@ -65,10 +59,29 @@ export default function Marketplace() {
           <div className="flex gap-4">
             <div style={{ position: 'relative' }}>
               <Search size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
-              <input type="text" className="input-field" placeholder="Search items..." style={{ paddingLeft: '2.5rem', width: '250px', marginBottom: 0 }} />
+              <input 
+                type="text" 
+                className="input-field" 
+                placeholder="Search items..." 
+                style={{ paddingLeft: '2.5rem', width: '250px', marginBottom: 0 }} 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-            <button className="btn btn-outline" style={{ padding: '12px 16px' }}><Filter size={18} /></button>
           </div>
+        </div>
+
+        <div className="flex gap-2" style={{ marginBottom: '2rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+          {['ALL', 'SELL', 'DONATE', 'SWAP', 'REPAIR'].map(type => (
+            <button 
+              key={type} 
+              className={`btn ${typeFilter === type ? 'btn-primary' : 'btn-outline'}`} 
+              style={{ padding: '6px 16px', borderRadius: 'var(--radius-pill)', fontSize: '0.9rem' }}
+              onClick={() => setTypeFilter(type)}
+            >
+              {type === 'ALL' ? 'All Items' : type === 'REPAIR' ? 'Needs Repair' : type}
+            </button>
+          ))}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
@@ -78,7 +91,14 @@ export default function Marketplace() {
             </div>
           ) : (
             listings.map(item => (
-              <div key={item.id} className="glass-card" style={{ padding: '0', display: 'flex', flexDirection: 'column' }}>
+              <div 
+                key={item.id} 
+                className="glass-card listing-card" 
+                style={{ padding: '0', display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                onClick={() => navigate(`/listing/${item.id}`)}
+                onMouseOver={(e) => (e.currentTarget.style.transform = 'translateY(-4px)')}
+                onMouseOut={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+              >
                 <div style={{ 
                   height: '200px', 
                   background: item.imageUrl ? `url(${item.imageUrl}) center/cover` : 'rgba(52, 211, 153, 0.1)',
@@ -107,6 +127,6 @@ export default function Marketplace() {
           )}
         </div>
       </main>
-    </div>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, LogOut, Award, Target, MapPin, Sparkles, Send, Paperclip, X } from 'lucide-react';
+import { Leaf, Award, Target, MapPin, Sparkles, Send, Paperclip, X } from 'lucide-react';
+import Skeleton from '../components/Skeleton';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState<any>(null);
@@ -51,11 +52,6 @@ export default function Dashboard() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
 
   const handleImageAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -124,48 +120,22 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return <div className="auth-wrapper"><div className="animate-slide-up"><Leaf size={40} className="spin" color="var(--primary-light)" /></div></div>;
+    return (
+      <main className="container animate-slide-up" style={{ padding: '3rem 24px', flex: 1 }}>
+        <div style={{ marginBottom: '3rem' }}>
+          <Skeleton height="40px" width="300px" style={{ marginBottom: '0.5rem' }} />
+          <Skeleton height="20px" width="400px" />
+        </div>
+        <div className="flex gap-6">
+          <div style={{ flex: 7 }}><Skeleton height="400px" /></div>
+          <div style={{ flex: 4 }}><Skeleton height="200px" /></div>
+        </div>
+      </main>
+    );
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <header style={{ 
-        background: 'rgba(15, 23, 42, 0.7)', 
-        backdropFilter: 'blur(16px)',
-        borderBottom: 'var(--glass-border)', 
-        padding: '1rem 2rem',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50
-      }}>
-        <div className="container flex justify-between items-center">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <Leaf size={28} color="var(--primary-light)" />
-            <h2 style={{ margin: 0, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '1px' }}>ReCircle</h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="btn btn-outline" style={{ padding: '8px 20px', fontSize: '0.9rem' }} onClick={() => navigate('/marketplace')}>
-              Marketplace
-            </button>
-            <div className="flex items-center gap-2" style={{ 
-              background: 'rgba(245, 158, 11, 0.15)', 
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              padding: '6px 16px', 
-              borderRadius: 'var(--radius-pill)', 
-              color: 'var(--accent-light)', 
-              fontWeight: 600 
-            }}>
-              <Award size={18} />
-              <span>{profile?.ecoPoints || 0} EcoPoints</span>
-            </div>
-            <button className="btn btn-outline" style={{ padding: '8px 20px', fontSize: '0.9rem' }} onClick={handleLogout}>
-              <LogOut size={16} /> Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <>
       {/* Main Content */}
       <main className="container animate-slide-up" style={{ padding: '3rem 24px', flex: 1 }}>
         <div className="flex justify-between items-end" style={{ marginBottom: '3rem' }}>
@@ -314,6 +284,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 }

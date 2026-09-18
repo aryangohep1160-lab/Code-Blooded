@@ -73,17 +73,8 @@ export default function CreateListing() {
   };
 
   return (
-    <div className="auth-wrapper" style={{ padding: '4rem 2rem' }}>
-      <div className="auth-container animate-slide-up" style={{ maxWidth: '600px' }}>
-        <button className="btn btn-outline" style={{ marginBottom: '2rem', padding: '8px 16px' }} onClick={() => navigate(-1)}>
-          <ArrowLeft size={18} /> Back
-        </button>
-
-        <div className="auth-title" style={{ textAlign: 'left', marginBottom: '2rem' }}>
-          <h1>List an Item</h1>
-          <p>Give your item a second life on the ReCircle network.</p>
-        </div>
-
+    <>
+      <main className="container animate-slide-up" style={{ padding: '3rem 24px', flex: 1, maxWidth: '800px', margin: '0 auto' }}>
         <div className="glass-card">
           {error && <div className="error-text" style={{marginBottom: '1rem'}}>{error}</div>}
 
@@ -151,7 +142,7 @@ export default function CreateListing() {
             </button>
           </form>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

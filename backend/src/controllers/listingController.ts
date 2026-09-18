@@ -34,7 +34,21 @@ export const createListing = async (req: Request, res: Response) => {
 
 export const getListings = async (req: Request, res: Response) => {
   try {
+    const { search, type } = req.query;
+    
+    let whereClause: any = {};
+    if (search) {
+      whereClause.OR = [
+        { title: { contains: String(search) } },
+        { description: { contains: String(search) } }
+      ];
+    }
+    if (type && type !== 'ALL') {
+      whereClause.type = String(type);
+    }
+
     const listings = await prisma.listing.findMany({
+      where: whereClause,
       include: {
         user: {
           select: {
@@ -46,6 +60,56 @@ export const getListings = async (req: Request, res: Response) => {
       orderBy: { createdAt: 'desc' }
     });
     res.json(listings);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getListingById = async (req: Request, res: Response) => {
+  try {
+    const listing = await prisma.listing.findUnique({
+      where: { id: String(req.params.id) },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            businessProfile: { select: { businessName: true, address: true } }
+          }
+        }
+      }
+    });
+    if (!listing) return res.status(404).json({ error: 'Listing not found' });
+    res.json(listing);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const claimItem = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const id = String(req.params.id);
+
+    const listing = await prisma.listing.findUnique({ where: { id } });
+    if (!listing) return res.status(404).json({ error: 'Listing not found' });
+
+    // Delete listing as it's claimed
+    await prisma.listing.delete({ where: { id } });
+
+    // Award EcoPoints to buyer (10) and seller (20)
+    await prisma.user.update({
+      where: { id: userId },
+      data: { ecoPoints: { increment: 10 } }
+    });
+    
+    if (userId !== listing.userId) {
+      await prisma.user.update({
+        where: { id: listing.userId },
+        data: { ecoPoints: { increment: 20 } }
+      });
+    }
+
+    res.json({ message: 'Item claimed successfully! You earned 10 EcoPoints.', earned: 10 });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

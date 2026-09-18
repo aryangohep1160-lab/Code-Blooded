@@ -156,3 +156,26 @@ export const getProfile = async (req: AuthRequest, res: Response): Promise<void>
     res.status(500).json({ error: 'Internal server error getting profile' });
   }
 };
+
+export const deleteAccount = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+    
+    // Prisma will cascade delete listings if set up, but we can do it manually to be safe
+    await prisma.listing.deleteMany({
+      where: { userId }
+    });
+
+    await prisma.user.delete({
+      where: { id: userId }
+    });
+
+    res.json({ message: 'Account and all associated data deleted successfully.' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
