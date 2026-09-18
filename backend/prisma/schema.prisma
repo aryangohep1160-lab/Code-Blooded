@@ -1,0 +1,51 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  passwordHash    String
+  role            String           // "HOUSEHOLD" or "BUSINESS"
+  firstName       String?
+  lastName        String?
+  phone           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  businessProfile BusinessProfile?
+  ecoPoints       Int              @default(0)
+  listings        Listing[]
+}
+
+model BusinessProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  businessName    String
+  gstNumber       String?
+  licenseNumber   String?
+  address         String?
+  isVerified      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Listing {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float?
+  condition   String?  // e.g., "New", "Used", "Needs Repair"
+  type        String   // e.g., "SELL", "DONATE", "SWAP", "REPAIR"
+  imageUrl    String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
