@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, Search, Heart } from 'lucide-react';
+import { Search, Heart } from 'lucide-react';
 import Skeleton from '../components/Skeleton';
 
 export default function Marketplace() {
@@ -71,18 +71,19 @@ export default function Marketplace() {
           </div>
         </div>
 
-        <div className="flex gap-2" style={{ marginBottom: '2rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
-          {['ALL', 'SELL', 'DONATE', 'SWAP', 'REPAIR'].map(type => (
-            <button 
-              key={type} 
-              className={`btn ${typeFilter === type ? 'btn-primary' : 'btn-outline'}`} 
-              style={{ padding: '6px 16px', borderRadius: 'var(--radius-pill)', fontSize: '0.9rem' }}
-              onClick={() => setTypeFilter(type)}
-            >
-              {type === 'ALL' ? 'All Items' : type === 'REPAIR' ? 'Needs Repair' : type}
-            </button>
-          ))}
-        </div>
+          {/* Filters */}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+            {['ALL', 'SELL', 'DONATE', 'SWAP', 'REPAIR', 'WANTED'].map(type => (
+              <button 
+                key={type}
+                className={`btn ${typeFilter === type ? 'btn-primary' : 'btn-outline'}`} 
+                style={{ padding: '8px 16px', fontSize: '0.9rem' }}
+                onClick={() => setTypeFilter(type)}
+              >
+                {type === 'ALL' ? 'All Items' : type}
+              </button>
+            ))}
+          </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
           {listings.length === 0 ? (
@@ -116,8 +117,8 @@ export default function Marketplace() {
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>{item.title}</h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem', flex: 1 }}>{item.description.substring(0, 80)}...</p>
                   <div className="flex justify-between items-center">
-                    <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary-light)' }}>
-                      {item.price ? `$${item.price.toFixed(2)}` : 'Free'}
+                    <span style={{ fontWeight: 'bold', color: 'var(--text-main)', fontSize: '1.1rem' }}>
+                      {item.price ? `₹${item.price.toFixed(2)}` : 'Free'}
                     </span>
                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.condition}</span>
                   </div>

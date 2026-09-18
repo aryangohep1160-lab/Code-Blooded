@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Leaf, ArrowLeft, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import Skeleton from '../components/Skeleton';
 
@@ -99,9 +99,9 @@ export default function ProductDetail() {
                 No Image Available
               </div>
             )}
-            <div style={{ position: 'absolute', top: 20, left: 20, background: 'var(--primary)', color: 'white', padding: '6px 16px', borderRadius: 'var(--radius-pill)', fontWeight: 600, letterSpacing: '1px' }}>
-              {item.type}
-            </div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--primary)', color: 'white', padding: '6px 16px', borderRadius: 'var(--radius-pill)', fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '1.5rem' }}>
+                {item.price ? `₹${item.price.toFixed(2)}` : 'Free'}
+              </div>
           </div>
 
           {/* Details Section */}
@@ -155,9 +155,9 @@ export default function ProductDetail() {
                 className="btn btn-primary btn-full" 
                 style={{ padding: '18px', fontSize: '1.2rem', marginTop: 'auto' }}
                 onClick={handleClaim}
-                disabled={claiming}
+                disabled={claiming || claimedData !== null}
               >
-                {claiming ? 'Processing...' : `Claim ${item.type === 'SELL' ? 'Item' : item.type === 'DONATE' ? 'Donation' : 'Listing'}`}
+                {claiming ? 'Processing...' : claimedData ? 'Success!' : `Claim ${item.type === 'SELL' ? 'Item' : item.type === 'DONATE' ? 'Donation' : item.type === 'WANTED' ? 'Offer Item' : 'Listing'}`}
               </button>
             )}
             

@@ -6,6 +6,7 @@ import Skeleton from '../components/Skeleton';
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>(null);
+  const [userListings, setUserListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -19,12 +20,18 @@ export default function Profile() {
       }
 
       try {
-        const res = await fetch('http://localhost:5001/api/auth/profile', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('Unauthorized');
-        const data = await res.json();
-        setProfile(data);
+        const [profileRes, listingsRes] = await Promise.all([
+          fetch('http://localhost:5001/api/auth/profile', { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch('http://localhost:5001/api/listings/user/me', { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+
+        if (!profileRes.ok) throw new Error('Unauthorized');
+        const profileData = await profileRes.json();
+        setProfile(profileData);
+
+        if (listingsRes.ok) {
+          setUserListings(await listingsRes.json());
+        }
       } catch (err) {
         localStorage.removeItem('token');
         navigate('/login');
@@ -58,6 +65,24 @@ export default function Profile() {
       navigate('/');
     } catch (err) {
       addToast("Error deleting account.", "error");
+      console.error(err);
+    }
+  };
+
+  const handleDeleteListing = async (listingId: string) => {
+    if (!window.confirm("Delete this listing?")) return;
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5001/api/listings/${listingId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Failed to delete listing');
+      
+      setUserListings(prev => prev.filter(l => l.id !== listingId));
+      addToast("Listing deleted.", "success");
+    } catch (err) {
+      addToast("Error deleting listing.", "error");
       console.error(err);
     }
   };
@@ -105,6 +130,38 @@ export default function Profile() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="glass-card" style={{ padding: '2rem', marginBottom: '2rem' }}>
+        <h3 style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.5rem', color: 'white' }}>My Active Listings</h3>
+        {userListings.length === 0 ? (
+          <p style={{ color: 'var(--text-muted)' }}>You haven't posted any items yet.</p>
+        ) : (
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            {userListings.map(listing => (
+              <div key={listing.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(15,23,42,0.5)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  {listing.imageUrl ? (
+                    <img src={listing.imageUrl} alt={listing.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
+                  ) : (
+                    <div style={{ width: '50px', height: '50px', background: 'var(--glass-bg)', borderRadius: '8px' }} />
+                  )}
+                  <div>
+                    <h4 style={{ margin: 0, color: 'white' }}>{listing.title}</h4>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--primary-light)' }}>{listing.type}</span>
+                  </div>
+                </div>
+                <button 
+                  className="btn btn-outline" 
+                  style={{ padding: '6px 12px', borderColor: '#EF4444', color: '#EF4444' }}
+                  onClick={() => handleDeleteListing(listing.id)}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="glass-card" style={{ border: '1px solid rgba(239, 68, 68, 0.3)', padding: '2rem' }}>

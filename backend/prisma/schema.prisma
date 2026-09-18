@@ -21,6 +21,8 @@ model User {
   businessProfile BusinessProfile?
   ecoPoints       Int              @default(0)
   listings        Listing[]
+  squadId         String?
+  squad           Squad?           @relation(fields: [squadId], references: [id])
 }
 
 model BusinessProfile {
@@ -48,4 +50,19 @@ model Listing {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Reward {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  cost        Int
+  imageUrl    String?
+}
+
+model Squad {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  members     User[]
 }

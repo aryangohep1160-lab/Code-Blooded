@@ -60,13 +60,13 @@ export default function Signup() {
         <div className="glass-card">
           <div className="role-selector">
             <div 
-              className={`role-option ${role === 'HOUSEHOLD' ? 'active' : ''}`}
+              className={`role-option household ${role === 'HOUSEHOLD' ? 'active' : ''}`}
               onClick={() => setRole('HOUSEHOLD')}
             >
               Household
             </div>
             <div 
-              className={`role-option ${role === 'BUSINESS' ? 'active' : ''}`}
+              className={`role-option business ${role === 'BUSINESS' ? 'active' : ''}`}
               onClick={() => setRole('BUSINESS')}
             >
               Business

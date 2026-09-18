@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Leaf, User, LayoutDashboard, ShoppingBag } from 'lucide-react';
+import { Leaf, User, LayoutDashboard, ShoppingBag, Users, Gift, Map } from 'lucide-react';
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -53,6 +53,48 @@ export default function Navigation() {
             }}
           >
             <ShoppingBag size={18} /> Marketplace
+          </Link>
+          <Link 
+            to="/community" 
+            style={{ 
+              color: isActive('/community') ? 'white' : 'var(--text-muted)', 
+              textDecoration: 'none', 
+              fontSize: '0.95rem',
+              fontWeight: isActive('/community') ? 600 : 400,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Users size={18} /> Community
+          </Link>
+          <Link 
+            to="/rewards" 
+            style={{ 
+              color: isActive('/rewards') ? 'white' : 'var(--text-muted)', 
+              textDecoration: 'none', 
+              fontSize: '0.95rem',
+              fontWeight: isActive('/rewards') ? 600 : 400,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Gift size={18} /> Rewards
+          </Link>
+          <Link 
+            to="/network" 
+            style={{ 
+              color: isActive('/network') ? 'white' : 'var(--text-muted)', 
+              textDecoration: 'none', 
+              fontSize: '0.95rem',
+              fontWeight: isActive('/network') ? 600 : 400,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Map size={18} /> Network
           </Link>
           <div style={{ width: '1px', height: '24px', background: 'var(--border)', margin: '0 8px' }} />
           <button 

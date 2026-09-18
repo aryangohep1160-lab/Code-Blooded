@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, UploadCloud, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
+import { UploadCloud, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
 
 export default function CreateListing() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     price: '',
-    condition: 'Used - Good',
+    condition: 'New',
     type: 'SELL',
     imageUrl: ''
   });
@@ -89,28 +89,28 @@ export default function CreateListing() {
               <textarea name="description" className="input-field" rows={4} placeholder="Describe the item, its history, and any flaws..." required onChange={handleChange}></textarea>
             </div>
 
-            <div className="flex gap-4">
-              <div className="input-group" style={{ flex: 1 }}>
-                <label className="input-label">Listing Type</label>
-                <select name="type" className="input-field" value={formData.type} onChange={handleChange}>
-                  <option value="SELL">Sell</option>
-                  <option value="DONATE">Donate</option>
-                  <option value="SWAP">Swap</option>
-                  <option value="REPAIR">Needs Repair</option>
-                </select>
+            <div className="input-group">
+              <label className="input-label">Listing Type</label>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                {['SELL', 'DONATE', 'SWAP', 'REPAIR', 'WANTED'].map(t => (
+                  <button type="button" key={t} className={`btn ${formData.type === t ? 'btn-primary' : 'btn-outline'}`} style={{ flex: 1, padding: '8px' }} onClick={() => setFormData({ ...formData, type: t })}>
+                    {t}
+                  </button>
+                ))}
               </div>
-
-              {formData.type === 'SELL' && (
-                <div className="input-group" style={{ flex: 1 }}>
-                  <label className="input-label">Price ($)</label>
-                  <input type="number" name="price" className="input-field" placeholder="0.00" min="0" step="0.01" required onChange={handleChange} />
-                </div>
-              )}
             </div>
+
+            {formData.type === 'SELL' && (
+              <div className="input-group">
+                <label className="input-label">Price (₹)</label>
+                <input type="number" name="price" className="input-field" placeholder="0.00" min="0" step="0.01" required onChange={handleChange} />
+              </div>
+            )}
 
             <div className="input-group">
               <label className="input-label">Condition</label>
               <select name="condition" className="input-field" value={formData.condition} onChange={handleChange}>
+                <option>New</option>
                 <option>New with tags</option>
                 <option>Like New</option>
                 <option>Used - Good</option>

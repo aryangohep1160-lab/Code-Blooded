@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, Award, Target, MapPin, Sparkles, Send, Paperclip, X } from 'lucide-react';
+import { Award, Target, MapPin, Sparkles, Send, Paperclip, X } from 'lucide-react';
 import Skeleton from '../components/Skeleton';
 
 export default function Dashboard() {
@@ -149,14 +149,21 @@ export default function Dashboard() {
           </div>
           <span style={{ 
             padding: '8px 16px', 
-            background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(5, 150, 105, 0.1))',
-            border: '1px solid rgba(52, 211, 153, 0.3)',
-            color: 'var(--primary-light)', 
+            background: profile?.role === 'BUSINESS' 
+              ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1))'
+              : 'linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(5, 150, 105, 0.1))',
+            border: profile?.role === 'BUSINESS'
+              ? '1px solid rgba(251, 191, 36, 0.3)'
+              : '1px solid rgba(52, 211, 153, 0.3)',
+            color: profile?.role === 'BUSINESS' ? 'var(--accent-light)' : 'var(--primary-light)', 
             borderRadius: 'var(--radius-pill)', 
             fontSize: '0.85rem', 
             fontWeight: 700, 
             letterSpacing: '1.5px',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            boxShadow: profile?.role === 'BUSINESS' 
+              ? '0 0 15px rgba(245, 158, 11, 0.15)' 
+              : '0 0 15px rgba(5, 150, 105, 0.15)'
           }}>
             {profile?.role} ACCOUNT
           </span>
@@ -275,10 +282,8 @@ export default function Dashboard() {
                 <h3 style={{ color: 'white', margin: 0, fontSize: '1.3rem' }}>Ready to earn?</h3>
                 <Award size={24} color="var(--accent-light)" />
               </div>
-              <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                Trade your EcoPoints for exclusive rewards and campus credits. New rewards drop every Friday!
-              </p>
-              <button className="btn btn-accent btn-full" style={{ padding: '14px' }}>View Rewards Catalog</button>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>Use your EcoPoints to redeem exciting vouchers and local perks!</p>
+              <button className="btn btn-accent btn-full" style={{ padding: '14px' }} onClick={() => navigate('/rewards')}>View Rewards Catalog</button>
             </div>
             
           </div>
