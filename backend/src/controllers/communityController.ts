@@ -33,7 +33,18 @@ export const getRewards = async (req: Request, res: Response) => {
         data: [
           { title: 'Free Campus Coffee', description: 'Redeem for one free coffee at the campus cafe.', cost: 50, imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=400' },
           { title: '₹100 Off Sustainable Brands', description: 'Get a discount on partner sustainable brands.', cost: 100, imageUrl: 'https://images.unsplash.com/photo-1605256585681-455837661b18?auto=format&fit=crop&q=80&w=400' },
-          { title: 'Premium Eco Badge', description: 'Show off your dedication with a shiny profile badge.', cost: 200, imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=400' }
+          { title: 'Premium Eco Badge', description: 'Show off your dedication with a shiny profile badge.', cost: 200, imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=400' },
+          { title: 'Reusable Water Bottle', description: 'A high-quality stainless steel water bottle.', cost: 300, imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&q=80&w=400' },
+          { title: 'Eco-Friendly Tote Bag', description: 'Perfect for your grocery shopping without plastic.', cost: 150, imageUrl: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=400' },
+          { title: 'Local Transit Pass', description: 'One day free pass for local public transport.', cost: 500, imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=400' }
+        ]
+      });
+    } else if (count === 3) {
+      await prisma.reward.createMany({
+        data: [
+          { title: 'Reusable Water Bottle', description: 'A high-quality stainless steel water bottle.', cost: 300, imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&q=80&w=400' },
+          { title: 'Eco-Friendly Tote Bag', description: 'Perfect for your grocery shopping without plastic.', cost: 150, imageUrl: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=400' },
+          { title: 'Local Transit Pass', description: 'One day free pass for local public transport.', cost: 500, imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=400' }
         ]
       });
     }
@@ -90,8 +101,13 @@ export const getSquads = async (req: Request, res: Response) => {
         data: [
           { name: 'EcoWarriors', description: 'Top sustainability advocates on campus.' },
           { name: 'Green Engineers', description: 'Engineers building a sustainable future.' },
-          { name: 'Zero Waste Club', description: 'Striving for a zero waste lifestyle.' }
+          { name: 'Zero Waste Club', description: 'Striving for a zero waste lifestyle.' },
+          { name: 'Plastic Free Heroes', description: 'Dedicated to eliminating single-use plastics.' }
         ]
+      });
+    } else if (count === 3) {
+      await prisma.squad.create({
+        data: { name: 'Plastic Free Heroes', description: 'Dedicated to eliminating single-use plastics.' }
       });
     }
 

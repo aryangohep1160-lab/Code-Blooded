@@ -88,13 +88,24 @@ export default function Rewards() {
         <div style={{ 
           background: 'rgba(245, 158, 11, 0.15)', 
           border: '1px solid rgba(245, 158, 11, 0.4)',
-          padding: '12px 24px', 
+          padding: '6px 14px', 
           borderRadius: 'var(--radius-pill)', 
-          display: 'flex', alignItems: 'center', gap: '8px'
+          display: 'flex', alignItems: 'center', gap: '6px',
+          fontSize: '0.9rem'
         }}>
           <span style={{ color: 'white', fontWeight: 600 }}>Your Balance:</span>
-          <Award size={20} color="var(--accent-light)" />
-          <span style={{ color: 'var(--accent-light)', fontSize: '1.2rem', fontWeight: 'bold' }}>{userPoints}</span>
+          <Award size={16} color="var(--accent-light)" />
+          <span style={{ color: 'var(--accent-light)', fontSize: '1rem', fontWeight: 'bold' }}>{userPoints}</span>
+        </div>
+      </div>
+
+      <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '3rem', background: 'rgba(52, 211, 153, 0.1)', border: '1px solid rgba(52, 211, 153, 0.3)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ background: 'rgba(52, 211, 153, 0.2)', padding: '12px', borderRadius: '50%' }}>
+          <Award size={32} color="var(--primary-light)" />
+        </div>
+        <div>
+          <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>How to earn EcoPoints?</h3>
+          <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>Earn points by listing items for donation, participating in community recycling drives, joining Green Squads, or repairing items through our local network.</p>
         </div>
       </div>
 

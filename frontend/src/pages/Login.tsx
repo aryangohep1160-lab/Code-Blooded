@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Leaf } from 'lucide-react';
+import { Leaf, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,12 @@ export default function Login() {
 
             <div className="input-group">
               <label className="input-label">Password</label>
-              <input type="password" name="password" className="input-field" required onChange={handleChange} />
+              <div style={{ position: 'relative' }}>
+                <input type={showPassword ? "text" : "password"} name="password" className="input-field" style={{ width: '100%', paddingRight: '40px' }} required onChange={handleChange} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{marginTop: '1rem'}}>

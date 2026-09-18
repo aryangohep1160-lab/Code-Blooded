@@ -69,7 +69,7 @@ export default function Community() {
         <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '0.5rem' }}>Join forces and see who leads the sustainability charge.</p>
       </div>
 
-      <div className="flex gap-6 flex-col md:flex-row" style={{ flexWrap: 'wrap' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
         
         {/* Leaderboard Section */}
         <div className="glass-card" style={{ flex: 1, minWidth: '350px' }}>

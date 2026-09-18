@@ -72,6 +72,39 @@ export default function Dashboard() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Ctrl + U to open file upload
+      if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+        e.preventDefault();
+        fileInputRef.current?.click();
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const items = e.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const base64String = (reader.result as string).split(',')[1];
+              setAttachedImage(base64String);
+              setAttachedMimeType(file.type);
+            };
+            reader.readAsDataURL(file);
+            e.preventDefault();
+          }
+        }
+      }
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim() && !attachedImage) return;
@@ -147,7 +180,11 @@ export default function Dashboard() {
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Here is your sustainability snapshot for today.</p>
           </div>
-          <span style={{ 
+          <div style={{ 
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            whiteSpace: 'nowrap',
             padding: '8px 16px', 
             background: profile?.role === 'BUSINESS' 
               ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1))'
@@ -163,10 +200,11 @@ export default function Dashboard() {
             textTransform: 'uppercase',
             boxShadow: profile?.role === 'BUSINESS' 
               ? '0 0 15px rgba(245, 158, 11, 0.15)' 
-              : '0 0 15px rgba(5, 150, 105, 0.15)'
+              : '0 0 15px rgba(5, 150, 105, 0.15)',
+            marginBottom: '8px'
           }}>
             {profile?.role} ACCOUNT
-          </span>
+          </div>
         </div>
 
         <div className="flex gap-6" style={{ alignItems: 'flex-start' }}>
@@ -237,7 +275,7 @@ export default function Dashboard() {
                 )}
 
                 <form className="ai-chat-input-area" onSubmit={handleSendMessage}>
-                  <button type="button" className="btn btn-outline" style={{ padding: '0 12px', borderRadius: 'var(--radius-md)' }} onClick={() => fileInputRef.current?.click()}>
+                  <button type="button" className="btn btn-outline" style={{ padding: '0 12px', borderRadius: 'var(--radius-md)' }} onClick={() => fileInputRef.current?.click()} title="Attach file (Ctrl+U)">
                     <Paperclip size={18} />
                   </button>
                   <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={handleImageAttachment} />
@@ -246,9 +284,10 @@ export default function Dashboard() {
                     type="text" 
                     className="input-field" 
                     style={{ flex: 1, marginBottom: 0 }}
-                    placeholder={attachedImage ? "Add a message with your image..." : "Ask about recycling, item value, or repair advice..."}
+                    placeholder={attachedImage ? "Add a message with your image..." : "Ask about recycling... (Ctrl+U to attach, or Paste image)"}
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
+                    onPaste={handlePaste}
                   />
                   <button type="submit" className="btn btn-primary" style={{ padding: '0 20px', borderRadius: 'var(--radius-md)' }} disabled={!chatInput.trim() && !attachedImage}>
                     <Send size={18} />

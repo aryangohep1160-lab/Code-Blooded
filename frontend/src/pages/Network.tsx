@@ -61,11 +61,11 @@ export default function Network() {
       </div>
 
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
           {[1,2,3,4].map(i => <div key={i} className="glass-card" style={{ padding: 0 }}><Skeleton height="400px" borderRadius="16px" /></div>)}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
           {partners.map(partner => (
             <div key={partner.id} className="glass-card" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
               <div style={{ height: '200px', position: 'relative' }}>

@@ -51,7 +51,7 @@ const MOCK_PARTNERS = [
     address: '42 Artisan Alley',
     distance: '2.1 km',
     rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1581783342308-f792db81eb2f?auto=format&fit=crop&q=80&w=400',
+    image: 'https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&q=80&w=400',
     description: 'Specializing in wooden furniture restoration and upcycling.',
     phone: '+1 (555) 888-9999',
     hours: 'Tue-Sun: 10AM - 5PM',
