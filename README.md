@@ -70,6 +70,7 @@ The platform guides users through the circular journey:
 -   Repair vs. replace analysis
 -   Personalized sustainability suggestions
 -   Listing-quality suggestions
+-   Currently the image inserted should be less than 100 kb
 
 ### 🔎 Reverse Search / Wishlist
 
@@ -80,17 +81,6 @@ The platform can use these demand signals to notify nearby users who may
 already own the requested item.
 
 **Demand Signal → Match → Listing**
-
-### 🔧 Repair vs. Replace AI
-
-Instead of immediately replacing a broken product, ReCircle can compare:
-
--   Estimated repair cost
--   Replacement cost
--   Environmental impact
--   Expected product life
-
-This helps users consider repair before disposal.
 
 ### 🎁 Real-World Rewards
 
@@ -120,7 +110,6 @@ ReCircle visualizes the estimated impact of user actions, including:
 -   CO₂ saved
 -   Waste diverted
 -   Resources saved
--   Product life extended
 
 All impact figures are presented as **estimates**, where applicable.
 
@@ -157,40 +146,6 @@ ratings, and services.
 
 ------------------------------------------------------------------------
 
-## 🔄 How ReCircle Works
-
-``` text
-        ┌─────────────┐
-        │ Add an Item │
-        └──────┬──────┘
-               ↓
-       ┌─────────────────┐
-       │ AI / Smart      │
-       │ Recommendations │
-       └────────┬────────┘
-                ↓
-    ┌─────────────────────────┐
-    │ What is the best next    │
-    │ step for this product?   │
-    └────────────┬────────────┘
-                 ↓
-     ┌───────────┴───────────┐
-     ↓           ↓           ↓
-   REPAIR      REUSE      SELL/SWAP
-     │           │           │
-     └───────────┼───────────┘
-                 ↓
-              DONATE
-                 ↓
-             RECYCLE
-                 ↓
-       ┌──────────────────┐
-       │ Impact + Rewards │
-       └──────────────────┘
-```
-
-------------------------------------------------------------------------
-
 ## 🚀 What Makes ReCircle Different?
 
 ### 1. Circular Economy, Not Just Recycling
@@ -218,11 +173,6 @@ friction and make sustainable actions more practical.
 
 Environmental impact tracking is combined with EcoPoints, challenges,
 badges, and community participation.
-
-### 6. Product Lifecycle Transparency
-
-The Digital Product Passport can preserve a product's journey across
-ownership, repair, reuse, donation, and recycling.
 
 ------------------------------------------------------------------------
 
@@ -335,13 +285,11 @@ Potential future improvements include:
 
   Member          Role
   --------------- ----------------------------
-  Team Member 1   Development / AI
-  Team Member 2   Development / AI
-  Team Member 3   UI/UX
-  Team Member 4   UI/UX / Product
-  Team Member 5   Product / QA / Integration
-
-> Replace the placeholders with your team's names and final roles.
+  Rashi            Development / AI
+  Aryan            Development / AI
+  Dhara            UI/UX
+  Preet            UI/UX / Product
+  Rudraksh         Product / QA / Integration
 
 ------------------------------------------------------------------------
 
