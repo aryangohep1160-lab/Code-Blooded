@@ -221,12 +221,24 @@ social, and rewarding**.
 
 > Add the technologies used by the team here.
 
--   **Frontend:** \[Add technology\]
--   **Backend:** \[Add technology\]
--   **Database:** \[Add technology\]
--   **AI / ML:** \[Add technology / API\]
--   **Maps / Location:** \[Add technology / API\]
--   **Authentication:** \[Add technology\]
+1. Frontend (User Interface)
+-> Technologies: React.js, Vite, TypeScript, Tailwind CSS
+
+
+2. AI / ML (Intelligence)
+-> Technologies: Google Gemini AI (`@google/genai`)
+
+
+3. Backend (Server & Logic)
+->Technologies: Node.js, Express.js, TypeScript
+
+
+4. Database (Data Storage)
+-> Technologies: Prisma ORM, SQLite
+
+
+5. Maps / Location (Hyperlocal Network)
+-> Technologies: Geolocation & Distance Calculation API
 
 ------------------------------------------------------------------------
 
@@ -307,3 +319,5 @@ measurements unless supported by verified data.
 **Buy smarter. Sell faster. Reuse more. Earn rewards.**
 
 **Give Your Unused Things a Second Life.**
+
+
