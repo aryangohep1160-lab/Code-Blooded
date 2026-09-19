@@ -101,20 +101,6 @@ EcoPoints can be connected to tangible incentives such as:
 -   Community rewards
 -   Recognition and achievements
 
-### 📱 Digital Product Passport
-
-Products can have a digital history accessible through a QR code.
-
-It can record:
-
--   Ownership history
--   Repair records
--   Reuse / donation history
--   Recycling records
--   Product lifecycle information
-
-This improves transparency and trust.
-
 ### 🌿 Green Squads
 
 Users can participate in sustainability communities based on:
