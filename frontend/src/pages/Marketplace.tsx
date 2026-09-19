@@ -1,7 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Heart } from 'lucide-react';
 import Skeleton from '../components/Skeleton';
+import { API_BASE_URL } from '../config/api';
+
+const DEFAULT_LISTINGS = [
+  {
+    id: 'l1',
+    title: 'Ergonomic Mesh Study Chair',
+    description: 'High back breathable mesh office chair with adjustable lumbar support and hydraulic lift.',
+    type: 'SELL',
+    price: 1499.0,
+    condition: 'Used',
+    imageUrl: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'l2',
+    title: 'Computer Science & AI Textbooks Bundle',
+    description: 'Semester 3 to 6 reference books for Algorithms, Python, and Machine Learning.',
+    type: 'SWAP',
+    price: 0.0,
+    condition: 'Like New',
+    imageUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80'
+  },
+  {
+    id: 'l3',
+    title: 'Philips Electric Kettle 1.5L',
+    description: 'Stainless steel fast-boiling kettle. Fully tested and descaled.',
+    type: 'SELL',
+    price: 450.0,
+    condition: 'Used',
+    imageUrl: 'https://images.unsplash.com/photo-1594213114663-d94db9b17125?w=600&q=80'
+  },
+  {
+    id: 'l4',
+    title: 'Mechanical Keyboard (Cherry MX Blue)',
+    description: 'Tactile mechanical keyboard with braided USB cable. Free donation to engineering students.',
+    type: 'DONATE',
+    price: 0.0,
+    condition: 'Used',
+    imageUrl: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&q=80'
+  }
+];
 
 export default function Marketplace() {
   const [listings, setListings] = useState<any[]>([]);
@@ -17,12 +57,17 @@ export default function Marketplace() {
         if (searchQuery) queryParams.append('search', searchQuery);
         if (typeFilter !== 'ALL') queryParams.append('type', typeFilter);
 
-        const res = await fetch(`http://localhost:5001/api/listings?${queryParams.toString()}`);
+        const res = await fetch(`${API_BASE_URL}/api/listings?${queryParams.toString()}`);
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
-        setListings(data);
+        setListings(Array.isArray(data) && data.length > 0 ? data : DEFAULT_LISTINGS);
       } catch (err) {
-        console.error(err);
+        console.warn('Marketplace fetch fallback:', err);
+        setListings(DEFAULT_LISTINGS.filter(item => {
+          const matchType = typeFilter === 'ALL' || item.type === typeFilter;
+          const matchSearch = !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchType && matchSearch;
+        }));
       } finally {
         setLoading(false);
       }
@@ -106,10 +151,10 @@ export default function Marketplace() {
                   borderBottom: 'var(--glass-border)',
                   position: 'relative'
                 }}>
-                  <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(15,23,42,0.6)', padding: 6, borderRadius: '50%', backdropFilter: 'blur(4px)' }}>
-                    <Heart size={18} color="white" />
+                  <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.85)', padding: 6, borderRadius: '50%', backdropFilter: 'blur(4px)', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
+                    <Heart size={18} color="var(--moss)" />
                   </div>
-                  <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--primary)', color: 'white', padding: '4px 12px', borderRadius: 'var(--radius-pill)', fontSize: '0.8rem', fontWeight: 600 }}>
+                  <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--moss)', color: 'var(--sprout)', padding: '4px 12px', borderRadius: 'var(--radius-pill)', fontSize: '0.8rem', fontWeight: 700 }}>
                     {item.type}
                   </div>
                 </div>

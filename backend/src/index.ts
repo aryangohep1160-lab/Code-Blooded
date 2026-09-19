@@ -31,6 +31,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'ReCircle API is running' });
 });
 
+// Production Static Frontend Serving (All-in-One deployment support)
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendDist));
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/uploads')) {
+    return res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
+      if (err) next();
+    });
+  }
+  next();
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

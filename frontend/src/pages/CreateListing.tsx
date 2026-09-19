@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadCloud, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 export default function CreateListing() {
   const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ export default function CreateListing() {
         submitData.append('image', imageFile);
       }
 
-      const res = await fetch('http://localhost:5001/api/listings', {
+      const res = await fetch(`${API_BASE_URL}/api/listings`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`

@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Leaf, User, LayoutDashboard, ShoppingBag, Users, Gift, Map } from 'lucide-react';
+import { User, LayoutDashboard, ShoppingBag, Users, Gift, Map } from 'lucide-react';
+import ReCircleLogo from './ReCircleLogo';
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -9,100 +10,73 @@ export default function Navigation() {
 
   return (
     <header style={{ 
-      background: 'rgba(15, 23, 42, 0.7)', 
+      background: 'rgba(255, 255, 255, 0.94)', 
       backdropFilter: 'blur(16px)',
-      borderBottom: 'var(--glass-border)', 
-      padding: '1rem 2rem',
+      borderBottom: '1px solid var(--line)', 
+      padding: '0.85rem 2rem',
       position: 'sticky',
       top: 0,
-      zIndex: 50
+      zIndex: 50,
+      boxShadow: '0 4px 20px -5px rgba(13, 51, 36, 0.05)'
     }}>
       <div className="container flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Leaf size={28} color="var(--primary-light)" />
-          <h2 style={{ margin: 0, color: 'white', fontFamily: 'var(--font-display)', letterSpacing: '1px' }}>ReCircle</h2>
+        {/* Brand Logo */}
+        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+          <ReCircleLogo size={34} textColor="var(--moss)" subtextColor="var(--fern)" />
         </Link>
         
         {/* Navigation Links */}
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-2">
           <Link 
             to="/dashboard" 
-            style={{ 
-              color: isActive('/dashboard') ? 'white' : 'var(--text-muted)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem',
-              fontWeight: isActive('/dashboard') ? 600 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className={`rc-chip ${isActive('/dashboard') ? 'on' : ''}`}
+            style={{ textDecoration: 'none', gap: '6px' }}
           >
-            <LayoutDashboard size={18} /> Dashboard
+            <LayoutDashboard size={16} /> Dashboard
           </Link>
           <Link 
             to="/marketplace" 
-            style={{ 
-              color: isActive('/marketplace') ? 'white' : 'var(--text-muted)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem',
-              fontWeight: isActive('/marketplace') ? 600 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className={`rc-chip ${isActive('/marketplace') ? 'on' : ''}`}
+            style={{ textDecoration: 'none', gap: '6px' }}
           >
-            <ShoppingBag size={18} /> Marketplace
+            <ShoppingBag size={16} /> Marketplace
           </Link>
           <Link 
             to="/community" 
-            style={{ 
-              color: isActive('/community') ? 'white' : 'var(--text-muted)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem',
-              fontWeight: isActive('/community') ? 600 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className={`rc-chip ${isActive('/community') ? 'on' : ''}`}
+            style={{ textDecoration: 'none', gap: '6px' }}
           >
-            <Users size={18} /> Community
+            <Users size={16} /> Community
           </Link>
           <Link 
             to="/rewards" 
-            style={{ 
-              color: isActive('/rewards') ? 'white' : 'var(--text-muted)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem',
-              fontWeight: isActive('/rewards') ? 600 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className={`rc-chip ${isActive('/rewards') ? 'on' : ''}`}
+            style={{ textDecoration: 'none', gap: '6px' }}
           >
-            <Gift size={18} /> Rewards
+            <Gift size={16} /> Rewards
           </Link>
           <Link 
             to="/network" 
-            style={{ 
-              color: isActive('/network') ? 'white' : 'var(--text-muted)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem',
-              fontWeight: isActive('/network') ? 600 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className={`rc-chip ${isActive('/network') ? 'on' : ''}`}
+            style={{ textDecoration: 'none', gap: '6px' }}
           >
-            <Map size={18} /> Network
+            <Map size={16} /> Network
           </Link>
-          <div style={{ width: '1px', height: '24px', background: 'var(--border)', margin: '0 8px' }} />
+          
+          <div style={{ width: '1px', height: '24px', background: 'var(--line)', margin: '0 6px' }} />
+
           <button 
-            className="btn btn-outline" 
-            style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', borderColor: isActive('/profile') ? 'var(--primary-light)' : 'var(--border)' }}
+            className="rc-btn rc-btn-ghost" 
+            style={{ 
+              padding: '6px 14px', 
+              fontSize: '13px', 
+              fontWeight: 600,
+              borderColor: isActive('/profile') ? 'var(--fern)' : 'var(--line)',
+              background: isActive('/profile') ? 'var(--mist)' : 'transparent'
+            }}
             onClick={() => navigate('/profile')}
           >
-            <User size={16} /> Profile
+            <User size={15} /> Profile
           </button>
         </nav>
       </div>

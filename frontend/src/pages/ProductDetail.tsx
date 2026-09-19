@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import Skeleton from '../components/Skeleton';
+import { API_BASE_URL } from '../config/api';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/listings/${id}`);
+        const res = await fetch(`${API_BASE_URL}/api/listings/${id}`);
         if (!res.ok) throw new Error('Not found');
         const data = await res.json();
         setItem(data);
@@ -34,7 +35,7 @@ export default function ProductDetail() {
     setClaiming(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/listings/${id}/claim`, {
+      const res = await fetch(`${API_BASE_URL}/api/listings/${id}/claim`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -106,29 +107,29 @@ export default function ProductDetail() {
 
           {/* Details Section */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: 'white' }}>{item.title}</h1>
+            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: 'var(--moss)' }}>{item.title}</h1>
             
             <div className="flex items-center gap-4" style={{ marginBottom: '2rem' }}>
-              <span style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary-light)' }}>
-                {item.price ? `$${item.price.toFixed(2)}` : 'Free'}
+              <span style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--fern)' }}>
+                {item.price ? `₹${item.price.toFixed(2)}` : 'Free'}
               </span>
-              <span style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.1)', borderRadius: 'var(--radius-pill)', fontSize: '0.9rem' }}>
+              <span style={{ padding: '4px 12px', background: 'var(--mist)', color: 'var(--moss)', borderRadius: 'var(--radius-pill)', fontSize: '0.9rem', fontWeight: 600 }}>
                 {item.condition}
               </span>
             </div>
 
-            <div className="glass-card" style={{ marginBottom: '2rem', padding: '1.5rem', background: 'rgba(15, 23, 42, 0.4)' }}>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'white' }}>Description</h3>
+            <div className="glass-card" style={{ marginBottom: '2rem', padding: '1.5rem', background: '#ffffff' }}>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--moss)' }}>Description</h3>
               <p style={{ color: 'var(--text-muted)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{item.description}</p>
             </div>
 
             <div className="glass-card" style={{ marginBottom: '2rem', padding: '1.5rem' }}>
               <div className="flex items-center gap-3">
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--moss)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sprout)', fontWeight: 'bold' }}>
                   {item.user?.firstName?.[0] || item.user?.businessProfile?.businessName?.[0] || '?'}
                 </div>
                 <div>
-                  <h4 style={{ margin: 0, color: 'white' }}>{item.user?.firstName || item.user?.businessProfile?.businessName}</h4>
+                  <h4 style={{ margin: 0, color: 'var(--moss)' }}>{item.user?.firstName || item.user?.businessProfile?.businessName}</h4>
                   <p className="flex items-center gap-1" style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                     <MapPin size={14} /> {item.user?.businessProfile?.address || 'Local Community Member'}
                   </p>
@@ -139,13 +140,13 @@ export default function ProductDetail() {
             {/* Action Area */}
             {claimedData ? (
               <div className="glass-card text-center animate-slide-up" style={{ 
-                background: 'linear-gradient(145deg, rgba(5, 150, 105, 0.2), rgba(6, 95, 70, 0.4))',
-                border: '1px solid var(--primary-light)'
+                background: 'var(--mist)',
+                border: '1px solid var(--fern)'
               }}>
-                <CheckCircle2 size={48} color="var(--primary-light)" style={{ margin: '0 auto 1rem' }} />
-                <h3 style={{ color: 'white', marginBottom: '0.5rem' }}>Item Claimed Successfully!</h3>
+                <CheckCircle2 size={48} color="var(--fern)" style={{ margin: '0 auto 1rem' }} />
+                <h3 style={{ color: 'var(--moss)', marginBottom: '0.5rem' }}>Item Claimed Successfully!</h3>
                 <p style={{ color: 'var(--text-muted)' }}>You've connected with the seller.</p>
-                <div style={{ display: 'inline-block', marginTop: '1rem', padding: '8px 24px', background: 'rgba(245, 158, 11, 0.2)', color: 'var(--accent-light)', borderRadius: 'var(--radius-pill)', fontWeight: 'bold' }}>
+                <div style={{ display: 'inline-block', marginTop: '1rem', padding: '8px 24px', background: 'rgba(212, 155, 90, 0.2)', color: 'var(--clay)', borderRadius: 'var(--radius-pill)', fontWeight: 'bold' }}>
                   <Sparkles size={16} style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '6px' }} />
                   +{claimedData.earned} EcoPoints Earned
                 </div>

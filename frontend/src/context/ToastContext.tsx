@@ -37,21 +37,21 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {toasts.map((toast) => (
           <div key={toast.id} className="animate-slide-up" style={{
-            background: 'rgba(15, 23, 42, 0.85)',
+            background: 'rgba(255, 255, 255, 0.96)',
             backdropFilter: 'blur(16px)',
-            border: `1px solid ${toast.type === 'success' ? 'var(--primary-light)' : toast.type === 'error' ? '#EF4444' : 'var(--border)'}`,
+            border: `1px solid ${toast.type === 'success' ? 'var(--fern)' : toast.type === 'error' ? '#DC2626' : 'var(--line)'}`,
             padding: '16px 20px',
             borderRadius: 'var(--radius-md)',
-            color: 'white',
+            color: 'var(--ink)',
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
             minWidth: '300px',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
+            boxShadow: '0 12px 36px -8px rgba(13, 51, 36, 0.18)'
           }}>
-            {toast.type === 'success' && <CheckCircle2 size={20} color="var(--primary-light)" />}
-            {toast.type === 'error' && <AlertCircle size={20} color="#EF4444" />}
-            {toast.type === 'info' && <Info size={20} color="#60A5FA" />}
+            {toast.type === 'success' && <CheckCircle2 size={20} color="var(--fern)" />}
+            {toast.type === 'error' && <AlertCircle size={20} color="#DC2626" />}
+            {toast.type === 'info' && <Info size={20} color="var(--fern)" />}
             
             <span style={{ flex: 1, fontSize: '0.95rem' }}>{toast.message}</span>
             

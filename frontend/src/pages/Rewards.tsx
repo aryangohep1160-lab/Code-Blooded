@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Gift, Award } from 'lucide-react';
 import Skeleton from '../components/Skeleton';
 import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../config/api';
 
 export default function Rewards() {
   const [rewards, setRewards] = useState<any[]>([]);
@@ -15,12 +16,12 @@ export default function Rewards() {
         const token = localStorage.getItem('token');
         
         // Fetch Rewards
-        const rewRes = await fetch('http://localhost:5001/api/community/rewards');
+        const rewRes = await fetch(`${API_BASE_URL}/api/community/rewards`);
         if (rewRes.ok) setRewards(await rewRes.json());
         
         // Fetch User Points if logged in
         if (token) {
-          const profRes = await fetch('http://localhost:5001/api/auth/profile', {
+          const profRes = await fetch(`${API_BASE_URL}/api/auth/profile`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (profRes.ok) {
@@ -50,7 +51,7 @@ export default function Rewards() {
     }
 
     try {
-      const res = await fetch('http://localhost:5001/api/community/rewards/redeem', {
+      const res = await fetch(`${API_BASE_URL}/api/community/rewards/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ rewardId })
@@ -86,25 +87,32 @@ export default function Rewards() {
           <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '0.5rem' }}>Spend your EcoPoints on exclusive vouchers and perks.</p>
         </div>
         <div style={{ 
-          background: 'rgba(245, 158, 11, 0.15)', 
-          border: '1px solid rgba(245, 158, 11, 0.4)',
-          padding: '6px 14px', 
-          borderRadius: 'var(--radius-pill)', 
-          display: 'flex', alignItems: 'center', gap: '6px',
-          fontSize: '0.9rem'
+          background: 'rgba(255, 255, 255, 0.75)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.9)',
+          boxShadow: '0 8px 24px -6px rgba(13, 51, 36, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+          padding: '4px 14px', 
+          height: '34px',
+          borderRadius: '999px', 
+          display: 'inline-flex', 
+          alignItems: 'center', 
+          gap: '6px',
+          fontSize: '12px'
         }}>
-          <span style={{ color: 'white', fontWeight: 600 }}>Your Balance:</span>
-          <Award size={16} color="var(--accent-light)" />
-          <span style={{ color: 'var(--accent-light)', fontSize: '1rem', fontWeight: 'bold' }}>{userPoints}</span>
+          <span style={{ color: 'var(--muted)', fontWeight: 600 }}>Your Balance:</span>
+          <Award size={14} color="var(--clay)" />
+          <span style={{ color: 'var(--moss)', fontSize: '13px', fontWeight: 800 }}>{userPoints}</span>
+          <span style={{ fontSize: '10px', fontWeight: 700, color: 'var(--fern)' }}>PTS</span>
         </div>
       </div>
 
-      <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '3rem', background: 'rgba(52, 211, 153, 0.1)', border: '1px solid rgba(52, 211, 153, 0.3)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{ background: 'rgba(52, 211, 153, 0.2)', padding: '12px', borderRadius: '50%' }}>
-          <Award size={32} color="var(--primary-light)" />
+      <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '3rem', background: 'var(--mist)', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ background: 'rgba(26, 104, 67, 0.15)', padding: '12px', borderRadius: '50%' }}>
+          <Award size={32} color="var(--fern)" />
         </div>
         <div>
-          <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>How to earn EcoPoints?</h3>
+          <h3 style={{ margin: 0, color: 'var(--moss)', fontSize: '1.2rem' }}>How to earn EcoPoints?</h3>
           <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>Earn points by listing items for donation, participating in community recycling drives, joining Green Squads, or repairing items through our local network.</p>
         </div>
       </div>
@@ -112,9 +120,9 @@ export default function Rewards() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
         {rewards.map(reward => (
           <div key={reward.id} className="glass-card" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ height: '200px', background: 'rgba(15, 23, 42, 0.8)', overflow: 'hidden' }}>
+            <div style={{ height: '200px', background: 'var(--sand)', overflow: 'hidden' }}>
               {reward.imageUrl ? (
-                <img src={reward.imageUrl} alt={reward.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                <img src={reward.imageUrl} alt={reward.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Gift size={48} color="var(--text-muted)" />
@@ -124,15 +132,15 @@ export default function Rewards() {
             
             <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <h3 style={{ margin: 0, color: 'white', fontSize: '1.4rem' }}>{reward.title}</h3>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.1)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', color: 'var(--accent-light)', fontWeight: 'bold' }}>
+                <h3 style={{ margin: 0, color: 'var(--moss)', fontSize: '1.4rem' }}>{reward.title}</h3>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(212, 155, 90, 0.15)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', color: 'var(--clay)', fontWeight: 'bold' }}>
                   <Award size={16} /> {reward.cost}
                 </span>
               </div>
               <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', flex: 1 }}>{reward.description}</p>
               
               <button 
-                className={`btn btn-full ${userPoints >= reward.cost ? 'btn-accent' : 'btn-outline'}`} 
+                className={`rc-btn rc-btn-primary btn-full`} 
                 onClick={() => handleRedeem(reward.id, reward.cost)}
                 disabled={userPoints < reward.cost}
                 style={{ opacity: userPoints < reward.cost ? 0.5 : 1, cursor: userPoints < reward.cost ? 'not-allowed' : 'pointer' }}
